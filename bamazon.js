@@ -42,6 +42,7 @@ function promptUser() {
           type: "input",
           message: "Please enter the Id of the product you would like to purchase.",
 
+
         },
         {
           name: "amount",
@@ -52,23 +53,33 @@ function promptUser() {
       .then(function (answer) {
         //get the info of chosen item
 
-        console.log(answer.amount);
-        console.log(answer.item_id);
-            connection.query(
-              "UPDATE products SET ? WHERE ?", {    
+
+        var chosenItem;
+        for (var i = 0; i < results.length; i++) {
+          if (results[i].item_id === parseInt(answer.item_id)) {
+            chosenItem = results[i].stock_quantity;
+            
+          }
+        }
+        
+
+        if (chosenItem >= parseInt(answer.amount)) {
+
+          connection.query(
+            "UPDATE products SET stock_quantity = (stock_quantity - ?) WHERE ?", [parseInt(answer.amount), {
+              item_id: answer.item_id
+            }],
+            function (err, res) {
+              if (err) throw err
+              console.log("Item purchased successfully!");
               
-                stock_quantity: stock_quantity - answer.amount,
-              },
-              {
-                item_id:answer.item_id
-              },
-              function (error) {
-                if (error) throw err;
-                console.log("Item purchased successfully!");
-                //start();
-              }
-            );
-      }
-    )
+            }
+          )
+        } else {
+          // bid wasn't high enough, so apologize and start over
+          console.log("Insufficient quantity!");
+          start();
+        }
+      })
   })
 }
