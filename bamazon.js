@@ -58,10 +58,10 @@ function promptUser() {
         for (var i = 0; i < results.length; i++) {
           if (results[i].item_id === parseInt(answer.item_id)) {
             chosenItem = results[i].stock_quantity;
-            
+
           }
         }
-        
+
 
         if (chosenItem >= parseInt(answer.amount)) {
 
@@ -72,7 +72,7 @@ function promptUser() {
             function (err, res) {
               if (err) throw err
               console.log("Item purchased successfully!");
-              
+
             }
           )
         } else {
