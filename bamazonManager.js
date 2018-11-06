@@ -41,7 +41,7 @@ function promptManager() {
         name: "menu",
         type: "list",
         message: "Select any of the below options",
-        choices: ["View Products for Sale", "View Low Inventory", "Add to Inventory", "Add New Product"]
+        choices: ["View Products for Sale", "View Low Inventory", "Add to Inventory", "Add New Product- 'Non Functional'"]
       })
       .then(function (answer) {
         if (answer.menu === "View Products for Sale") {
