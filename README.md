@@ -11,6 +11,5 @@ Start MySQL
 In your MySQL database, copy and run the schema.sql to make and populate the database with test items.
 Run program with node using node:
 Commands:
-
 "node bamazon" --> Buyer can see the items for purchase and make a purchase.
 "node bamazonManager" --> Can view products for sale, view inventory lower than 5 items, add to inventory, add a new product.
