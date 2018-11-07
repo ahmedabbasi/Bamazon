@@ -41,7 +41,7 @@ function promptManager() {
         name: "menu",
         type: "list",
         message: "Select any of the below options",
-        choices: ["View Products for Sale", "View Low Inventory", "Add to Inventory", "Add New Product- 'Non Functional'"]
+        choices: ["View Products for Sale", "View Low Inventory", "Add to Inventory", "Add New Product"]
       })
       .then(function (answer) {
         if (answer.menu === "View Products for Sale") {
@@ -50,7 +50,7 @@ function promptManager() {
           viewLow();
         } else if (answer.menu === "Add to Inventory") {
           viewAdd();
-        } else {
+        } else if(answer.menu === "Add New Product") {
           addNew();
         }
       });
@@ -109,7 +109,11 @@ function viewAdd() {
   )
 }
 
-function addnew() {
+function addNew() {
+  connection.query("SELECT * FROM products",
+  function (err, results) {
+    if (err) throw err;
+  
   inquirer.prompt([{
         name: "addnew",
         type: "confirm",
@@ -121,21 +125,42 @@ function addnew() {
         type: "input",
         message: "What is the name of product"
 
+      },
+      {
+        name:"amount",
+        type: "input",
+        message:"how many units you want to add"
+      }
+      ,
+      {
+        name:"department",
+        type: "input",
+        message:"Department?"
+      }
+      ,
+      {
+        name:"price",
+        type: "input",
+        message:"What price you want to keep it for?"
       }
     ])
     .then(function (answer) {
       console.log("Inserting a new product...\n");
       var query = connection.query(
-        "INSERT INTO products SET ?", {
-          flavor: "Rocky Road",
-          price: 3.0,
-          quantity: 50
+        "INSERT INTO products Values ?",  {
+          product_name:answer.item_name,
+          stock_quantity:answer.amount,
+          department_name:answer.department,
+          price:answer.price
+
         },
         function (err, res) {
-          console.log(res.affectedRows + " product inserted!\n");
+          console.log(" product inserted!\n");
           // Call updateProduct AFTER the INSERT completes
-          updateProduct();
+          
         }
       )
     });
+  }
+)
 }
